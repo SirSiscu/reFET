@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --row-height: 6rem;
+}
+
+@media print {
+    @page {
+        size: landscape;
+        margin: 0.5cm;
+    }
+
+    body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        background-color: white;
+    }
+
+    /* Stretch rows for clarity. Multi-page is acceptable. */
+    :root {
+        --row-height: 3.5cm;
+        /* Normalized font size */
+        font-size: 11pt;
+    }
+
+    /* Hide UI */
+    .print\:hidden {
+        display: none !important;
+    }
+
+    /* Ensure background graphics print */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Activity Cards in Print */
+    .activity-card {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    /* Force exact fit in print to fill the slot */
+    .print\:block .activity-card {
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        /* Use the passed variable, fallback to inline style if not working, 
+           but usually inline style works. We override 'calc(... - 2px)' with exact calc */
+        height: calc(var(--row-height) * var(--duration)) !important;
+        border-radius: 0 !important;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+    }
+
+    /* Force content to flow naturally */
+    html,
+    body,
+    #root {
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* Flex containers often break pagination. Block is safer. */
+    .flex,
+    .h-screen {
+        display: block !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* Ensure inner scrollable areas assume full height */
+    .overflow-auto,
+    .overflow-y-auto,
+    .overflow-hidden {
+        overflow: visible !important;
+        height: auto !important;
+    }
+
+    /* Reset sticky */
+    .sticky {
+        position: static !important;
+    }
+
+    /* Remove shadows */
+    .shadow-sm,
+    .shadow-md,
+    .shadow-xl {
+        box-shadow: none !important;
+    }
+}
